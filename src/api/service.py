@@ -123,12 +123,19 @@ def deleteAuthor(author_id: int):
     
     return author
 
-def createFakeUser():
-    userAuth = UserAuth("admin", "password")
+def register(username: str, password: str):
+    if session.query(User).filter(User.username == username).count() > 0:
+        return {
+            "status": "error",
+            "message": "User already exists"
+            }
     user = User()
-    user.username = "admin"
-    user.hashed_password = pwd_context.encrypt("password")
+    user.username = username
+    user.hashed_password = pwd_context.encrypt(password)
     session.add(user)
     session.commit()
     session.refresh(user)
-    return userAuth
+    return {
+        "status": "ok",
+        "user": user
+        }

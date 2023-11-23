@@ -29,6 +29,17 @@ def login_for_access_token(form_data: UserAuth):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     return token_data
 
+@app.post("/api/v1/register", response_model=Token)
+def register(form_data: UserAuth):
+    print(form_data)
+    result = service.register(form_data.username, form_data.password)
+    if result["status"] == "error":
+        raise HTTPException(status_code=400, detail=result["message"])
+    token_data = authenticateUser(form_data.username, form_data.password)
+    if token_data is None:
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+    return token_data
+
 @app.get("/api/v1/books")
 def getAllBooks(page: int = 0, pageSize: int = 100, filter: str = '', current_user: UserAuth = Depends(getCurrentUser)):
     return service.getBooks(page, pageSize, filter)
@@ -76,7 +87,3 @@ def update_book(filter: str = '', current_user: UserAuth = Depends(getCurrentUse
 @app.delete("/api/v1/authors/{id}")
 def deleteAuthor(id: int, current_user: UserAuth = Depends(getCurrentUser)):
     return service.deleteAuthor(id)
-    
-@app.get("/create-fake-user")
-def createFakeUser():
-    return service.createFakeUser()

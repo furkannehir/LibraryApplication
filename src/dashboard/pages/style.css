@@ -1,0 +1,90 @@
+.form-group {
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 1rem; 
+  margin-right: 20px;
+}
+
+.back-drop {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 300;
+    background-color: grey;
+    opacity: 0.5;
+    display: block;
+}
+
+.edit-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 500;
+    width: 300px;
+}
+
+.edit-dialog-book {
+    z-index: 1000;
+}
+  
+.edit-dialog h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+  
+.edit-dialog form {
+    display: flex;
+    flex-direction: column;
+}
+  
+.edit-dialog label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #333;
+}
+  
+.edit-dialog input, .edit-dialog select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: space-between;
+    justify-content: center;
+    margin: 1.5rem auto;
+}
+
+.pagination {
+    justify-content: center;
+    align-items: bottom;
+    margin: 1rem 0;
+}
+
+
+.fixed-bottom {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }

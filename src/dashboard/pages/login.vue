@@ -1,104 +1,78 @@
 <template>
-    <div class="login-container">
-      <div class="login-content">
-        <p class="login-info">You need to log in to access the content</p>
-        <form @submit.prevent="login" class="login-form">
-          <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username" v-model="formData.username" />
-          </div>
-          <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" v-model="formData.password" />
-          </div>
-          <button type="submit">Login</button>
-        </form>
-        <p class="error-message" v-if="showErrorMessage">{{ errorMessage }}</p>
+    <div class="auth-container">
+      <div class="slider">
+        <button class="slide-button" @click="isLogin = true" :class="{ active: isLogin }">Login</button>
+        <button class="slide-button" @click="isLogin = false" :class="{ active: !isLogin }">Register</button>
+        <div class="slider-background" :style="{ 'transform': isLogin ? 'translateX(0)' : 'translateX(100%)' }"></div>
+      </div>
+      <div v-if="isLogin">
+        <LoginPage />
+      </div>
+      <div v-else>
+        <RegisterPage />
       </div>
     </div>
   </template>
   
   <script lang="ts">
-  import { Component, Vue } from 'nuxt-property-decorator';
-  import axios from 'axios';
+  import LoginPage from './loginForm.vue';
+  import RegisterPage from './register.vue';
   
-  @Component
-  export default class LoginPage extends Vue {
-    formData: { username: string; password: string } = {
-      username: '',
-      password: ''
-    };
-    showErrorMessage: boolean = false;
-    errorMessage: string = '';
-  
-    async login() {
-      try {
-        const response = await axios.post('http://localhost:8000/api/v1/login', this.formData);
-        const token = response.data.access_token;
-
-        // Save the token to localStorage
-        localStorage.setItem('token', token);
-
-        // Redirect to the books page after successful login
-        this.$router.push('/books');
-      } catch (error: any) {
-        console.error('Login error:', error);
-        if (error.response && error.response.status === 400) {
-          this.showErrorMessage = true;
-          this.errorMessage = 'Incorrect username or password';
-        }
-      }
-    }
-  }
+  export default {
+    data() {
+      return {
+        isLogin: true,
+      };
+    },
+    components: {
+      LoginPage,
+      RegisterPage,
+    },
+  };
   </script>
   
-  <style scoped lang="scss">
-  .login-container {
+  <style scoped>
+  .auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #cce5ff;
+    width: 100vw;
+    flex-direction: column;
   }
   
-  .login-content {
-    text-align: center;
-    padding: 20px;
+  .slider {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 0.1rem;
+    height: 50px;
+    background: #e6f7ff;
+    border-radius: 25px;
+    overflow: hidden;
   }
   
-  .login-info {
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
-  
-  .login-form {
-    text-align: center;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #e6f7ff;
-  }
-  
-  .form-group {
-    margin: 10px 0;
-  }
-  
-  button {
-    background-color: #007BFF;
-    color: #fff;
+  .slide-button {
+    flex: 1;
     border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
+    background: transparent;
+    height: 100%;
+    font-size: 16px;
     cursor: pointer;
   }
   
-  button:hover {
-    background-color: #0056b3;
+  .slider-background {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    transition: transform 0.4s;
+    background: #1890ff;
+    opacity: 0.3;
   }
   
-  .error-message {
-    color: red; /* Red color for error message text */
-    margin-top: 10px;
+  .active {
+    color: black;
   }
   </style>
-  
